@@ -1,2 +1,0 @@
-The Linux kernel and these example modules are licensed under the terms of the GNU General Public License version 2.
-https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
