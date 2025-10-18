@@ -15,7 +15,9 @@ add_or_replace() {
     echo "${line}" >> "${BOOTCFG}"
   fi
 }
+# I2C
 
+add_or_replace "dtparam=i2c_arm" "dtparam=i2c_arm=on"
 # SPI
 add_or_replace "dtparam=spi" "dtparam=spi=on"
 # 1-Wire (GPIO4 by default)
