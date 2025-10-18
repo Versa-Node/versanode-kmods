@@ -15,7 +15,7 @@ add_or_replace() {
     echo "${line}" >> "${BOOTCFG}"
   fi
 }
-
+# I2C
 # I2C
 add_or_replace "dtparam=i2c_arm" "dtparam=i2c_arm=on"
 # SPI
