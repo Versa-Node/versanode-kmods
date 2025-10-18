@@ -1,38 +1,43 @@
-# versanode-kmods (Multiple DKMS Kernel Modules)
+# stage2-kmods — VersaNode dummy DKMS module for pi-gen
 
-A collection of small example Linux kernel modules, each packaged for **DKMS** so they rebuild automatically on kernel updates.
-Intended for Raspberry Pi and other Debian-based systems, but portable to any Linux with DKMS.
+This repository is a **drop-in pi-gen stage** that builds and installs a dummy
+kernel module named **versanode-bus-io** via **DKMS**. Put this folder as
+`pi-gen/stage2-kmods/` in your OS build and include `stage2-kmods` right after
+`stage2` in `STAGE_LIST`.
+
+It creates a simple misc device `/dev/versanode-bus-io` that currently does
+nothing useful; it's a scaffold for future development.
+
+## Usage (in your OS repo)
+1. Place this repo at `pi-gen/stage2-kmods/` (or add as a submodule).
+2. Ensure your pi-gen config includes it right after stage2, e.g.:
+   ```
+   STAGE_LIST="stage0 stage1 stage2 stage2-kmods export-image"
+   ```
+3. Build as usual.
+
+## Local test on a running Pi
+```bash
+sudo apt-get install -y dkms raspberrypi-kernel-headers build-essential
+# Copy module sources to /opt/versanode-os-kmods then run:
+sudo /opt/versanode-os-kmods/scripts/dkms-install-all.sh
+# Load the module:
+sudo modprobe versanode-bus-io
+ls -l /dev/versanode-bus-io
+dmesg | tail -n 50
+```
 
 ## Layout
 ```
-modules/
-  hellopi/        # misc device: /dev/hellopi (greeting string)
-  versatime/      # procfs: /proc/versatime shows jiffies & uptime
-scripts/
-  dkms-install-all.sh
-  dkms-remove-all.sh
+stage2-kmods/
+  00-kmods/
+    00-packages
+    00-run-chroot.sh
+  files/
+    opt/versanode-os-kmods/
+      modules/versanode-bus-io/
+        dkms.conf
+        Makefile
+        versanode-bus-io.c
+      scripts/dkms-install-all.sh
 ```
-
-Each subdirectory in `modules/` is a **self-contained DKMS module** with its own `dkms.conf`, `Makefile`, and sources.
-
-## Install *all* modules (DKMS)
-```bash
-sudo apt-get update && sudo apt-get install -y build-essential dkms raspberrypi-kernel-headers
-./scripts/dkms-install-all.sh
-```
-
-## Remove *all* modules
-```bash
-./scripts/dkms-remove-all.sh
-```
-
-## Install a single module (example: hellopi)
-```bash
-cd modules/hellopi
-sudo dkms add .
-sudo dkms build hellopi/1.0
-sudo dkms install hellopi/1.0
-```
-
-## License
-Each module uses GPL-2.0 (same as the Linux kernel). See `LICENSES/GPL-2.0-only.txt`.
