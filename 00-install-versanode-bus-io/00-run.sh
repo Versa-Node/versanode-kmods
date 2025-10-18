@@ -11,7 +11,7 @@ add_or_replace() {
   if grep -qE "^(#\s*)?${key}(=|$)" "${BOOTCFG}"; then
     # Replace existing (commented or not)
     sed -i -E "s|^(#\s*)?${key}.*$|${line}|" "${BOOTCFG}"
-  else
+  else 
     echo "${line}" >> "${BOOTCFG}"
   fi
 }
