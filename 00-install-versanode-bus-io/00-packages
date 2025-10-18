@@ -1,0 +1,4 @@
+# Minimal tools for bus bring-up
+i2c-tools
+python3-smbus
+spi-tools

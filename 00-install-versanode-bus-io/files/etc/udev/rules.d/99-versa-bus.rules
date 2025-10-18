@@ -1,0 +1,3 @@
+# Make I2C and SPI nodes accessible to plugdev group
+KERNEL=="i2c-[0-9]*", MODE="0660", GROUP="plugdev"
+KERNEL=="spidev[0-9].[0-9]", MODE="0660", GROUP="plugdev"
